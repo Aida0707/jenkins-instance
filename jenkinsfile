@@ -76,7 +76,7 @@ def slavePodTemplate = """
                                 sh """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${aws_region}
-                                terraform init
+                                source set-env.sh 
                                 terraform apply -auto-approve
                                 """
                             } else {
@@ -84,8 +84,8 @@ def slavePodTemplate = """
                                 sh """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${aws_region}
-                                terraform init
-                                terraform plan -auto-approve
+                                source set-env.sh 
+                                terraform plan 
                                 """
                             }
                         }
@@ -96,7 +96,7 @@ def slavePodTemplate = """
                             sh """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${aws_region}
-                                terraform init
+                                source set-env.sh 
                                 terraform destroy -auto-approve
                                 """
                         } else {
