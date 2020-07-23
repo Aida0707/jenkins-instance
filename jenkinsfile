@@ -67,8 +67,9 @@ def slavePodTemplate = """
 
             container("buildtools") {
               withCredentials([
-                usernamePassword(credentialsId: 'AWS_ACCESS_KEY_ID', 
+                usernamePassword(credentialsId: "aws_access-${environment}", 
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                println("Selected cred is: aws_access-${environment}")
 
 
               stage("Terraform Apply/plan"){
