@@ -112,6 +112,7 @@ def slavePodTemplate = """
                       source ./setenv.sh dev.tfvars
                       terraform plan -var-file \$DATAFILE
                       """
+                     }
                   }
                 } }
                 
