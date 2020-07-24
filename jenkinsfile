@@ -50,8 +50,8 @@ def slavePodTemplate = """
         booleanParam(defaultValue: false, description: 'Please select to destroy all', name: 'terraformDestroy'),
         choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
         choice(choices: ['dev', 'qa', 'stage', 'prod'], description: 'Please select the environment to deploy', name: 'environment'),
-        string(defaultValue: '', description: 'Please enter the aws ami id ', name: 'aws_ami_ids', trim: false),
-        string(defaultValue: '', description: 'Please enter the instance name', name: 'aws_instance', trim: false),
+        string(defaultValue: '', description: 'Please enter the aws ami id ', name: 'aws_ami_id', trim: false),
+        string(defaultValue: '', description: 'Please enter the instance name', name: 'aws_instance_name', trim: false),
         booleanParam(defaultValue: false, description: 'Please select debug_mode ', name: 'debug_mode')
         ])
       ])
@@ -67,6 +67,8 @@ def slavePodTemplate = """
             println("Generate Variables")
             def deployment_configuration_tfvars = """
             environment = "${environment}"
+            aws_ami_id = "${params.aws_ami_id}"
+            aws_instance_name = "${aws_instance_name}"
             """.stripIndent()
 
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"
