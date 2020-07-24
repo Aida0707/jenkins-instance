@@ -52,7 +52,7 @@ def slavePodTemplate = """
         choice(choices: ['dev', 'qa', 'stage', 'prod'], description: 'Please select the environment to deploy', name: 'environment'),
         string(defaultValue: '', description: 'Please enter the aws ami id ', name: 'aws_ami_id', trim: false),
         string(defaultValue: '', description: 'Please enter the instance name', name: 'aws_instance_name', trim: false),
-        booleanParam(defaultValue: false, description: 'Please select debug_mode ', name: 'debug_mode')
+        booleanParam(defaultValue: false, description: 'Please select to choose debugMode ', name: 'debugMode')
         ])
       ])
 
@@ -88,6 +88,8 @@ def slavePodTemplate = """
               stage("Terraform Apply/plan"){
                 if (!params.terraformDestroy) {
                   if (params.terraformApply) {
+                  if (debugMode) {
+                      println("Using debug_mode")  
                       println("Applying the changes")
                       sh """
                       #!/bin/bash
@@ -98,9 +100,11 @@ def slavePodTemplate = """
                       source ./setenv.sh dev.tfvars
                       terraform apply --auto-approve -var-file \$DATAFILE
                       """
-                  } else {
+                  }} else {
                       println("Planing the changes")
-                      sh """
+                     else { 
+                      println("Not using debug_mode")
+                     sh """
                       #!/bin/bash
                       set +ex
                       ls -l
@@ -109,7 +113,7 @@ def slavePodTemplate = """
                       terraform plan -var-file \$DATAFILE
                       """
                   }
-                }
+                } }
                 
 
             }
@@ -122,7 +126,7 @@ def slavePodTemplate = """
                     ls -l
                     export AWS_DEFAULT_REGION=${aws_region}
                     source ./setenv.sh dev.tfvars
-                    terraform plan -var-file \$DATAFILE
+                    terraform destroy --auto-approve -var-file \$DATAFILE
                     """
                   } else {
                       println("Skipping  the destroy")
