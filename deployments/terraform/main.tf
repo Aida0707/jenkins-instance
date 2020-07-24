@@ -7,5 +7,3 @@ resource "aws_instance" "jenkins" {
   }
 }
 
-aws_ami_id = "ami-08f3d892de259504d"
-aws_instance_name = "Jenkins"
