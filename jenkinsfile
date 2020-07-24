@@ -86,10 +86,14 @@ def slavePodTemplate = """
 
 
               stage("Terraform Apply/plan"){
+                if (params.debugMode) {
+                    println("Using debug_mode")  
+                    }
+                    else { 
+                    println("Not using debug_mode")
+                    }
                 if (!params.terraformDestroy) {
                   if (params.terraformApply) {
-                  if (debugMode) {
-                      println("Using debug_mode")  
                       println("Applying the changes")
                       sh """
                       #!/bin/bash
@@ -100,10 +104,8 @@ def slavePodTemplate = """
                       source ./setenv.sh dev.tfvars
                       terraform apply --auto-approve -var-file \$DATAFILE
                       """
-                  }} else {
+                  } else {
                       println("Planing the changes")
-                     else { 
-                      println("Not using debug_mode")
                      sh """
                       #!/bin/bash
                       set +ex
@@ -112,7 +114,6 @@ def slavePodTemplate = """
                       source ./setenv.sh dev.tfvars
                       terraform plan -var-file \$DATAFILE
                       """
-                     }
                   }
                 } }
                 
