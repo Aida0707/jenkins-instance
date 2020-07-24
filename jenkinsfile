@@ -93,6 +93,7 @@ def slavePodTemplate = """
                       #!/bin/bash
                       set +ex
                       ls -l
+                      export TF_LOG=DEBUG
                       export AWS_DEFAULT_REGION=${aws_region}
                       source ./setenv.sh dev.tfvars
                       terraform plan -var-file \$DATAFILE
