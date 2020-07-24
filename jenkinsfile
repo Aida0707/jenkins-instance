@@ -96,7 +96,7 @@ def slavePodTemplate = """
                       export TF_LOG=DEBUG
                       export AWS_DEFAULT_REGION=${aws_region}
                       source ./setenv.sh dev.tfvars
-                      terraform apply -var-file \$DATAFILE
+                      terraform apply --auto-approve -var-file \$DATAFILE
                       """
                   } else {
                       println("Planing the changes")
